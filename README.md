@@ -54,4 +54,4 @@ There are many limitations to this scraping strategy. The first one is *time*. F
 ### Preview of the Applet (terminal form)
 
 **Figure 2.** FacebookWebScraper in command-line (terminal) form
-![](/img/cmd-mockup.png)
+![](/img/cmd_mockup.png)
