@@ -47,11 +47,18 @@ Given a depth n and a child-count k, we will be using the Breadth-first search m
 - A BFS search of this tree would result in the following order of visited nodes: A B C D E F G
 - A DFS search of this tree would result in the following order of visited nodes: A B D E C F G
 
-**Limitations of this scraping strategy**
+**Limitations of this search strategy**
 
-There are many limitations to this scraping strategy. The first one is *time*. For the global suggestions, they are very rarely immediately updated upon activity. This means that there must be some type of sleeping strategy put in place to allow time for the global suggestions to be updated. The other limitation is the finiteness of the search space. Both for the immediate and global suggestions, the amount of pages or groups that we can access is very limited. For pages, it seems that there are only 5 suggestions every time you follow a new page, bounding k between 1 and 5. In general, the global suggestions for pages are also very limited, generating nearly no new suggestions whenever a page has been followed. Similarly, when it comes to investigating the group algorithm, the immediate suggestions are very limited as well, usually generating no immediate suggestions when joining or following a group. Although the global suggestions for groups have more options, they suffer from the same finiteness as the pages global suggestion. The only *infinite* source of suggestions is found for pages, by scrolling through the feed and visiting suggested posts.
+There are many limitations to this search strategy, leading to the algorithm running out of pages/groups to follow. The first one is *time*. For the global suggestions, they are very rarely immediately updated upon activity. This means that there must be some type of sleeping strategy put in place to allow time for the global suggestions to be updated. The other limitation is the finiteness of the search space. Both for the immediate and global suggestions, the amount of pages or groups that we can access is very limited. For pages, it seems that there are only 5 suggestions every time you follow a new page, bounding k between 1 and 5. In general, the global suggestions for pages are also very limited, generating nearly no new suggestions whenever a page has been followed. Similarly, when it comes to investigating the group algorithm, the immediate suggestions are very limited as well, usually generating no immediate suggestions when joining or following a group. Although the global suggestions for groups have more options, they suffer from the same finiteness as the pages global suggestion. The only *infinite* source of suggestions is found for pages, by scrolling through the feed and visiting suggested posts.
 
-### Preview of the Applet (terminal form)
+### Interaction Modes
+There are three interaction modes in the applet. Theses interaction modes define a node "visit". They serve the purpose of uncovering the sensitivity of the Facebook suggestions algorithm in relation to user interaction. 
+
+- Follow-only, interactionless mode: This mode is as simple as it gets, when the algorithm visits a node, it simply follow/join the group/page and move on to the next page.
+- Follow and interactive mode: In this mode, when the algorithm visits a node, it will follow/join the group/page and interact with the first few posts. It will interact by reacting to posts, conforming to the most popular form of reaction on each respective post. The number of posts that will be interacted with is a parameter that the applet user can determine.
+- Experimental: This mode is different from the other two in that it will not follow/join the group/page the first time it sees it. This mode will clear all the suggested groups/join that will be seen for the first time, and only follow the pages/groups that appeared more than once. This type of search is special because it increases the risk of running out of pages/groups to follow and will therefore require a large list of starting pages/groups. However, it is extremely relevant when it comes to revealing the possibility of "blacklisting" a page/group or a type of page/group.  
+
+## Preview of the Applet (terminal form)
 
 **Figure 2.** FacebookWebScraper in command-line (terminal) form
 ![](/img/cmd_mockup.png)
