@@ -41,6 +41,7 @@ Given a depth n and a child-count k, we will be using the Breadth-first search m
 **Depth-first search**: This search mode will visit all children of its children before visiting its sibling. The search will start at depth 0, only a single page/group is in the search space. The algorithm will then *save* the k first children of the node, but only recursively visit the first child node. The algorithm will keep recursively visit child nodes until it has reached the n<sup>th</sup> depth-level. At this point, the algorithm will travel to its siblings to perform the type of search. In other words, the algorithm only travels to a sibling node if the current node's subtree has been completely visited.
 
 **Figure 1.** A search tree with depth n = 2, child-count k = 2
+
 ![](/img/tree.png)
 
 - A BFS search of this tree would result in the following order of visited nodes: A B C D E F G
