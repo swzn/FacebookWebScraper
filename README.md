@@ -50,3 +50,8 @@ Given a depth n and a child-count k, we will be using the Breadth-first search m
 **Limitations of this scraping strategy**
 
 There are many limitations to this scraping strategy. The first one is *time*. For the global suggestions, they are very rarely immediately updated upon activity. This means that there must be some type of sleeping strategy put in place to allow time for the global suggestions to be updated. The other limitation is the finiteness of the search space. Both for the immediate and global suggestions, the amount of pages or groups that we can access is very limited. For pages, it seems that there are only 5 suggestions every time you follow a new page, bounding k between 1 and 5. In general, the global suggestions for pages are also very limited, generating nearly no new suggestions whenever a page has been followed. Similarly, when it comes to investigating the group algorithm, the immediate suggestions are very limited as well, usually generating no immediate suggestions when joining or following a group. Although the global suggestions for groups have more options, they suffer from the same finiteness as the pages global suggestion. The only *infinite* source of suggestions is found for pages, by scrolling through the feed and visiting suggested posts.
+
+### Preview of the Applet (terminal form)
+
+**Figure 2.** FacebookWebScraper in command-line (terminal) form
+![](/img/cmd-mockup.png)
