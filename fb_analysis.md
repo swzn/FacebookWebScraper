@@ -3,7 +3,7 @@
 
 The FacebookWebScraper gives access to a lot of data, most of which can be used to come to conclusions about the impact that groups/pages have on the users of the platform. This document serves to first describe the type of data which will be gathered, and then elaborate on how data mining strategies to come to scientific conclusions about how the algorithm affects users.
 
-## Data Collection
+## Data Collection <a name="collection"></a>
 Data will be collected from the following sources:
 <ol>
 <li> Immediate suggestions upon join a group </li>
@@ -24,7 +24,7 @@ At the very least, all of the above data can be collected with the applet. The f
 - Recent activity effect on the advertisements
 - Off-site activity effect on suggestions
 
-## Data Analysis
+## Data Analysis <a name="analysis"></a>
 
 This section will cover how the data with the current plan for the applet can be used for researching purposes.
 
