@@ -8,7 +8,7 @@ This automated applet will allow the user to scrape relevant data by searching t
 - Facebook Group suggestions scraper
 
 # Content Scraper
-On Facebook Pages and Groups, users can make posts that are visible to page followers, group members but also the public in some cases. The content scraper will have the options to save a selected amount of posts on the page (starting from the most recent). 
+<a name="content">On</a> Facebook Pages and Groups, users can make posts that are visible to page followers, group members but also the public in some cases. The content scraper will have the options to save a selected amount of posts on the page (starting from the most recent). 
 The information that can be gathered from these posts are: 
 - the content of post
 - the reactions to the post
@@ -36,9 +36,9 @@ The scraping algorithm will run under two different search modes and three diffe
 ### Search modes
 Given a depth n and a child-count k, we will be using the Breadth-first search method ([BFS](https://en.wikipedia.org/wiki/Breadth-first_search)) or the Depth-first search method ([DFS](https://en.wikipedia.org/wiki/Depth-first_search)).
 
-**Breadth-first search**: This search mode will first visit all siblings of a node before visiting the children. This search will start at depth 0, where only a single page/group is in the search space. The algorithm will then visit the k first children of the node, before recursively visiting children of its children. In other words, this search completely visits a depth-level before passing onto the next one. This search ends once all the nodes on the n<sup>th</sup> depth-level have been visited.
+**Breadth-first search**: <a name="BFS">This</a> search mode will first visit all siblings of a node before visiting the children. This search will start at depth 0, where only a single page/group is in the search space. The algorithm will then visit the k first children of the node, before recursively visiting children of its children. In other words, this search completely visits a depth-level before passing onto the next one. This search ends once all the nodes on the n<sup>th</sup> depth-level have been visited.
 
-**Depth-first search**: This search mode will visit all children of its children before visiting its sibling. The search will start at depth 0, only a single page/group is in the search space. The algorithm will then *save* the k first children of the node, but only recursively visit the first child node. The algorithm will keep recursively visit child nodes until it has reached the n<sup>th</sup> depth-level. At this point, the algorithm will travel to its siblings to perform the type of search. In other words, the algorithm only travels to a sibling node if the current node's subtree has been completely visited.
+**Depth-first search**: <a name="DFS">This</a> search mode will visit all children of its children before visiting its sibling. The search will start at depth 0, only a single page/group is in the search space. The algorithm will then *save* the k first children of the node, but only recursively visit the first child node. The algorithm will keep recursively visit child nodes until it has reached the n<sup>th</sup> depth-level. At this point, the algorithm will travel to its siblings to perform the type of search. In other words, the algorithm only travels to a sibling node if the current node's subtree has been completely visited.
 
 **Figure 1.** A search tree with depth n = 2, child-count k = 2
 
