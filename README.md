@@ -10,9 +10,9 @@ This submission contains the development plan for the application, along with mo
 - Providing a repeatable methodology to independent researchers 
 
 ## Table of Contents
-[1. FacebookWebScraper](/fb-ws.md)
+[1. FacebookWebScraper](/fb_ws.md)
 
-[2. Facebook Data Mining](/fb-analysis.md)
+[2. Facebook Data Mining](/fb_analysis.md)
 
 [3. Deliverable Schedule](/schedule.md)
 
