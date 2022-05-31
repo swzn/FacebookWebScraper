@@ -7,8 +7,8 @@ This automated applet will allow the user to scrape relevant data by searching t
 - Facebook Page suggestions scraper
 - Facebook Group suggestions scraper
 
-# Content Scraper
-<a name="content">On</a> Facebook Pages and Groups, users can make posts that are visible to page followers, group members but also the public in some cases. The content scraper will have the options to save a selected amount of posts on the page (starting from the most recent). 
+# Content Scraper <a name="content"></a>
+On Facebook Pages and Groups, users can make posts that are visible to page followers, group members but also the public in some cases. The content scraper will have the options to save a selected amount of posts on the page (starting from the most recent). 
 The information that can be gathered from these posts are: 
 - the content of post
 - the reactions to the post
