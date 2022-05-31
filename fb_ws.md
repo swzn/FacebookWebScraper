@@ -60,5 +60,5 @@ There are three interaction modes in the applet. Theses interaction modes define
 
 ## Preview of the Applet (terminal form)
 
-**Figure 2.** FacebookWebScraper in command-line (terminal) form
+**Figure 2.** Mock-up of FacebookWebScraper in command-line (terminal) form
 ![](/img/cmd_mockup.png)
