@@ -31,9 +31,9 @@ public class BrowserController {
     private ArrayList<String> tabs;
 
     public BrowserController(){
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Sajad\\Desktop\\McGill\\McGill Summer 2022\\ChromeDriver\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", FacebookWebScraper.RESOURCES.getChromeDriverPath());
         options = new ChromeOptions();
-        options.addArguments("--disable-notifications");
+        options.addArguments("--disable-notifications", "--disable-gpu", "--disable-extensions", "--disable-logging", "--log-level=3", "--disable-logging-redirect");
         driver = new ChromeDriver(options);
         waiter = new WebDriverWait(driver, Duration.ofSeconds(10));
     }

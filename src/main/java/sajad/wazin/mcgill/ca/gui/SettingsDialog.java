@@ -10,12 +10,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import sajad.wazin.mcgill.ca.FacebookWebScraper;
-import sajad.wazin.mcgill.ca.scraper.ContentScraperSettings;
+import sajad.wazin.mcgill.ca.ResourcesManager;
+import sajad.wazin.mcgill.ca.scraper.settings.ContentScraperSettings;
 import sajad.wazin.mcgill.ca.scraper.ScraperEnum;
-import sajad.wazin.mcgill.ca.scraper.ScraperSettings;
-import sajad.wazin.mcgill.ca.scraper.SuggestionsScraperSettings;
-import sajad.wazin.mcgill.ca.scraper.interactions.InteractionModeEnum;
-import sajad.wazin.mcgill.ca.scraper.search.SearcherEnum;
+import sajad.wazin.mcgill.ca.scraper.settings.ScraperSettings;
 import sajad.wazin.mcgill.ca.utils.FXUtils;
 
 /**
@@ -47,7 +45,7 @@ public class SettingsDialog extends Stage {
         else initializeSuggestionsSettingsGrid();
 
         this.root.getChildren().add(settingsPane);
-        this.getIcons().add(new Image(FacebookWebScraper.ICON_PATH));
+        this.getIcons().add(new Image(ResourcesManager.ICON_PATH));
         this.setTitle("Choose scraping settings");
         this.setScene(new Scene(root));
     }
@@ -74,9 +72,9 @@ public class SettingsDialog extends Stage {
 
         Button saveSettings = new Button("Save");
         saveSettings.setOnAction(actionEvent -> {
-            this.scraperSettings = new SuggestionsScraperSettings(
+            /*this.scraperSettings = new SuggestionsScraperSettings(
                     InteractionModeEnum.getInteractionMode(interactionMode.getSelectionModel().getSelectedItem()),
-                    SearcherEnum.getSearcher(searchMode.getSelectionModel().getSelectedItem()));
+                    SearcherEnum.getSearcher(searchMode.getSelectionModel().getSelectedItem()));*/
             this.hide();
         });
         settingsPane.add(saveSettings, 0, 5);

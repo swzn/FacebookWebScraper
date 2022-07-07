@@ -8,7 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import sajad.wazin.mcgill.ca.FacebookWebScraper;
+import sajad.wazin.mcgill.ca.ResourcesManager;
 
 /**
  * @author Sajad Wazin @ https://github.com/swzn
@@ -31,7 +31,7 @@ public class DialogBox {
         // Create pop-up
         Stage dialogStage = new Stage();
         dialogStage.setTitle("FacebookWebScraper");
-        dialogStage.getIcons().add(new Image(FacebookWebScraper.ICON_PATH));
+        dialogStage.getIcons().add(new Image(ResourcesManager.ICON_PATH));
         Pane dialogPane = new Pane();
 
         // Create container for scene elements

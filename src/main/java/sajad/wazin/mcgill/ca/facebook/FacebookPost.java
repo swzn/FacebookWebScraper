@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import sajad.wazin.mcgill.ca.chrome.BrowserController;
+import sajad.wazin.mcgill.ca.utils.SeleniumUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,14 +90,16 @@ public class FacebookPost {
                 if(textField.equals("More") && reactionTabs.get(i).getAttribute("aria-hidden").equals("false")) {
                     reactionTabs.get(i).click();
                     globalController.wait(5);
-                    List<WebElement> allMoreTabs = reactionContainer.findElements(By.cssSelector(getCSSAsString("div", "role", "menuitemradio")));
+                    WebElement moreReactionsContainer = globalController.getDriver().findElement(By.cssSelector(getCSSAsString("div", "class", "rpm2j7zs k7i0oixp gvuykj2m ni8dbmo4 du4w35lb q5bimw55 ofs802cu pohlnb88 dkue75c7 mb9wzai9 l56l04vs r57mb794 l9j0dhe7 kh7kg01d eg9m0zos c3g1iek1 gs1a9yip rq0escxv j83agx80 cbu4d94t rz4wbd8a a8nywdso smdty95z c1zf3a5g gu2zta1c k4urcfbm")));
+                    List<WebElement> allMoreTabs = moreReactionsContainer.findElements(By.cssSelector(getCSSAsString("div", "role", "menuitemradio")));
                     for (int j = 0; j < allMoreTabs.size(); j++) {
+                        SeleniumUtils.highlightWebElement(allMoreTabs.get(j), globalController);
                         String imageURL = allMoreTabs.get(j).findElement(By.cssSelector(getCSSAsString("img","class","hu5pjgll bixrwtb6"))).getAttribute("src");
                         reactions.setReaction(imageURL, allMoreTabs.get(j).getText());
                     }
                 }
                 else {
-                    globalController.wait(10);
+                    globalController.wait(5);
                     List<WebElement> images = reactionTabs.get(i).findElements(By.cssSelector(getCSSAsString("img","class","hu5pjgll bixrwtb6")));
                     if (images.size() == 0) continue;
                     String imageURL = images.get(0).getAttribute("src");

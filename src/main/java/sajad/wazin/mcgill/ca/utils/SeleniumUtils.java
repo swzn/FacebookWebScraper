@@ -54,6 +54,6 @@ public class SeleniumUtils {
     }
 
     public static void highlightWebElement(WebElement webElement, BrowserController controller) {
-        controller.runJavaScript("arguments[0].style.border='2px solid red'", webElement);
+        controller.runJavaScript("arguments[0].style.border='1px solid red'", webElement);
     }
 }
