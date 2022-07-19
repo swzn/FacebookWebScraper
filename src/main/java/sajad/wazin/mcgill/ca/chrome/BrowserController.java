@@ -7,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import sajad.wazin.mcgill.ca.FacebookWebScraper;
 import sajad.wazin.mcgill.ca.utils.SeleniumUtils;
 
@@ -23,29 +22,43 @@ import java.util.ArrayList;
 
 public class BrowserController {
 
+    /*
+    * This class is a Wrapper on the ChromeDriver class from Selenium.
+    * It serves as an object that has access to chains of methods from the Selenium API to make using the driver
+    * easier.
+    * */
+
     private final WebDriver driver;
     private final ChromeOptions options;
-    private final int WAIT_TIME = 5;
-    private WebDriverWait waiter;
-
     private ArrayList<String> tabs;
 
-    public BrowserController(){
+    /*
+    * Public constructor that will launch Chrome on instantiation.
+    * The "headless" boolean will hide Chrome if true.
+    * */
+    public BrowserController(boolean headless) {
         System.setProperty("webdriver.chrome.driver", FacebookWebScraper.RESOURCES.getChromeDriverPath());
         options = new ChromeOptions();
         options.addArguments("--disable-notifications", "--disable-gpu", "--disable-extensions", "--disable-logging", "--log-level=3", "--disable-logging-redirect");
+        if(headless) options.addArguments("--headless");
         driver = new ChromeDriver(options);
-        waiter = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
+    /*
+    * Prepares the window to be used for scraping. This assumes that the login is a valid Facebook login and the case
+    * where the credentials are invalid is not handled by this software.
+    * */
     public void initialize(){
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
         driver.get("https://facebook.com");
 
-        getFirstElementById("email").sendKeys(FacebookWebScraper.EMAIL);
-        getFirstElementById("pass").sendKeys(FacebookWebScraper.PASS);
+        getFirstElementById("email").sendKeys(FacebookWebScraper.LOGIN.getEmail());
+        getFirstElementById("pass").sendKeys(FacebookWebScraper.LOGIN.getPassword());
+
         getFirstElementByName("login").click();
+
+
     }
 
     public WebElement getFirstElementById(String id){
@@ -56,10 +69,6 @@ public class BrowserController {
         return driver.findElements(By.name(name)).get(0);
     }
 
-    public WebElement getFirstElementByClass(String aClass) {
-        this.wait(WAIT_TIME);
-        return driver.findElements(By.className(aClass)).get(0);
-    }
 
     public WebElement getFirstElementByCSS(String htmlElement, String cssTag, String value){
         this.wait(10);
@@ -85,9 +94,6 @@ public class BrowserController {
         return driver;
     }
 
-    public void returnToHome(){
-        getFirstElementByCSS("a", "aria-label", "Home").click();
-    }
 
     public void openNewTab(String URL) {
         ((JavascriptExecutor)driver).executeScript("window.open()");
@@ -105,7 +111,4 @@ public class BrowserController {
         return ((JavascriptExecutor)driver).executeScript(command, element);
     }
 
-    public WebDriverWait getWaiter() {
-        return waiter;
-    }
 }

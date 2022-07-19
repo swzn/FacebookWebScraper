@@ -1,14 +1,21 @@
 package sajad.wazin.mcgill.ca.gui;
 
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import sajad.wazin.mcgill.ca.FacebookWebScraper;
+import sajad.wazin.mcgill.ca.scraper.ContentScraper;
 import sajad.wazin.mcgill.ca.scraper.ScraperEnum;
+import sajad.wazin.mcgill.ca.scraper.SuggestionsScraper;
+import sajad.wazin.mcgill.ca.scraper.settings.ContentScraperSettings;
+import sajad.wazin.mcgill.ca.scraper.settings.ScraperSettings;
+import sajad.wazin.mcgill.ca.scraper.settings.SuggestionsScraperSettings;
 
 import java.io.File;
+import java.nio.file.Path;
 
 /**
  * @author Sajad Wazin @ https://github.com/swzn
@@ -23,6 +30,9 @@ public class ApplicationFrame {
     private PasswordField passField;
     private LoginButton loginButton;
     private SettingsDialog settingsDialog;
+
+    private GridPane loggerMessages;
+
     private File selectedInput;
     private File selectedOutput;
 
@@ -53,10 +63,10 @@ public class ApplicationFrame {
     }
 
     private void generateScrapingDropdown() {
-        // Create the dropdown
+        // Create the dropdown that allows users to choose the scrapers they want
         StringDropdown scrapingModes = new StringDropdown(
-                "Posts Content Scraper", "Groups Content Scraper",
-                "Posts Suggestions Scraper", "Groups Suggestions Scraper"
+                "Posts Content Scraper",
+                "Posts Suggestions Scraper"
         );
         scrapingModes.setPromptText("Choose a scraping mode");
 
@@ -101,18 +111,17 @@ public class ApplicationFrame {
         inputChooser.setInitialDirectory(new File(rootPath));
 
         // Create an output file chooser for ".json" Files
-        FileChooser outputChooser = new FileChooser();
+        DirectoryChooser outputChooser = new DirectoryChooser();
         outputChooser.setTitle("Choose output");
-        outputChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON format", "*.json"));
         outputChooser.setInitialDirectory(new File(rootPath));
 
         // Create a field that shows the input path
-        TextField inputPath = new TextField("Select an input path...");
+        TextField inputPath = new TextField("Select an input file...");
         inputPath.setEditable(false);
         inputPath.setPrefSize(500, inputPath.getHeight());
 
         // Create a text field that shows the output path
-        TextField outputPath = new TextField("Select an output path...");
+        TextField outputPath = new TextField("Select an output directory...");
         outputPath.setEditable(false);
         outputPath.setPrefSize(500, outputPath.getHeight());
 
@@ -126,7 +135,7 @@ public class ApplicationFrame {
         // This button triggers the output file chooser
         Button outputSelector = new Button("Select output");
         outputSelector.setOnAction(actionEvent -> {
-            selectedOutput = outputChooser.showSaveDialog(this.getApplicationGrid().getScene().getWindow());
+            selectedOutput = outputChooser.showDialog(this.getApplicationGrid().getScene().getWindow());
             if(selectedOutput != null) outputPath.setText(selectedOutput.getAbsolutePath());
         });
 
@@ -146,6 +155,15 @@ public class ApplicationFrame {
     private void generateScrapeButton(){
         Button scrapeButton = new Button("Start Scraping");
 
+        ScrollPane loggingPane = new ScrollPane();
+        loggingPane.setPrefSize(300, 200);
+        loggingPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        loggerMessages = new GridPane();
+        loggingPane.setContent(loggerMessages);
+
+        CheckBox headless = new CheckBox("GUI-less Chrome");
+
         scrapeButton.setOnAction(actionEvent -> {
             if(!getLoginButton().isLocked()) {
                 new DialogBox("Please lock your credentials!").show();
@@ -160,12 +178,33 @@ public class ApplicationFrame {
                 new DialogBox("Please choose an output file!").show();
             }
             else {
-                new DialogBox("Scraping will begin shortly...").show();
+                for(Node node : applicationGrid.getChildren()) {
+                    node.setDisable(true);
+                }
+                applicationGrid.add(loggingPane,0 ,7);
+                FacebookWebScraper.LOGGER.setLogger(loggerMessages);
+                FacebookWebScraper.LOGGER.log("GUI disabled");
+                FacebookWebScraper.LOGGER.log("Scraping will begin shortly...");
+
+                ScraperSettings currentSettings = settingsDialog.getScraperSettings();
+                currentSettings.setHeadless(headless.isSelected());
+                currentSettings.setInput(selectedInput);
+                currentSettings.setOutput(Path.of(selectedOutput.toURI()));
+
+                Thread scraperExecutor = new Thread (() -> {
+                    if (currentSettings instanceof ContentScraperSettings) {
+                        ContentScraper scraper = new ContentScraper(currentSettings);
+                        scraper.runScraper();
+                    } else if (currentSettings instanceof SuggestionsScraperSettings) {
+                        SuggestionsScraper scraper = new SuggestionsScraper(currentSettings);
+                        scraper.runScraper();
+                    }
+                });
+                scraperExecutor.start();
             }
         });
-
-        applicationGrid.add(scrapeButton,0,5);
-
+        applicationGrid.add(headless, 0, 5);
+        applicationGrid.add(scrapeButton, 0, 6);
     }
 
     public void initialize(){

@@ -11,14 +11,12 @@ import sajad.wazin.mcgill.ca.chrome.BrowserController;
 
 public class SeleniumUtils {
     public static String getCSSAsString(String htmlElement, String cssTag, String value) {
-        StringBuilder output = new StringBuilder();
-        output.append(htmlElement);
-        output.append("[");
-        output.append(cssTag);
-        output.append("=\"");
-        output.append(value);
-        output.append("\"]");
-        return output.toString();
+        return htmlElement +
+                "[" +
+                cssTag +
+                "=\"" +
+                value +
+                "\"]";
     }
 
     public static int parseReactionNumber(String number){
