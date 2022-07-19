@@ -12,38 +12,27 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+
 import sajad.wazin.mcgill.ca.gui.ApplicationFrame;
 import sajad.wazin.mcgill.ca.gui.LoginButton;
-import sajad.wazin.mcgill.ca.scraper.SuggestionsScraper;
-import sajad.wazin.mcgill.ca.scraper.settings.SuggestionsScraperSettings;
-import sajad.wazin.mcgill.ca.scraper.interactions.InteractionModeEnum;
-import sajad.wazin.mcgill.ca.scraper.search.SearcherEnum;
-
-import java.io.File;
+import sajad.wazin.mcgill.ca.persistence.PersistenceService;
+import sajad.wazin.mcgill.ca.utils.Logger;
+import sajad.wazin.mcgill.ca.utils.Login;
+import sajad.wazin.mcgill.ca.utils.ResourcesManager;
 
 
 public class FacebookWebScraper extends Application {
 
     public static int MIN_POSTS = 5;
-    public static String EMAIL = "davidodson69@gmail.com";
-    public static String PASS = "Saji@wazin2001";
 
+    public static Logger LOGGER = new Logger();
 
     public static ResourcesManager RESOURCES = ResourcesManager.getResourceManager();
+    public static PersistenceService PERSISTENCE_SERVICE = PersistenceService.getPersistenceService();
+
+    public static Login LOGIN = new Login();
 
     public static void main(String[] args) {
-
-        SuggestionsScraperSettings settings = new SuggestionsScraperSettings(InteractionModeEnum.NULL_INTERACTION,
-                SearcherEnum.BFS, 2, 2);
-
-        SuggestionsScraper scraper = new SuggestionsScraper(settings);
-        settings.setInput(new File("C:\\Users\\Sajad\\Desktop\\input.txt"));
-        scraper.runScraper();
-
-        /*ContentScraperSettings settings = new ContentScraperSettings(true, true, false, true, 2, 5);
-        settings.setInput(new File("C:\\Users\\Sajad\\Desktop\\input.txt"));
-        ContentScraper scraper = new ContentScraper(settings);
-        scraper.runScraper();*/
 
         launch(args);
 

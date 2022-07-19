@@ -1,6 +1,7 @@
 package sajad.wazin.mcgill.ca.scraper.settings;
 
 import java.io.File;
+import java.nio.file.Path;
 
 /**
  * @author Sajad Wazin @ https://github.com/swzn
@@ -11,7 +12,7 @@ import java.io.File;
 public class ContentScraperSettings implements ScraperSettings {
 
     private File inputPath;
-    private File outputPath;
+    private Path outputPath;
 
     //Mandatory booleans
     private final boolean saveContent;
@@ -19,21 +20,21 @@ public class ContentScraperSettings implements ScraperSettings {
     private final boolean saveShares;
     private final boolean saveReactions;
 
-    //Optional boolean
-    private boolean isAsynchronous = false;
-
     //Default parameters
     private int amountOfPosts = 2;
     private int amountOfComments = 10;
     private int instanceCount = 1;
+    private int amountOfShares;
 
-    public ContentScraperSettings(boolean saveContent, boolean saveComments, boolean saveShares, boolean saveReactions, int amountOfPosts, int amountOfComments) {
+    //Optional boolean
+    private boolean headless = false;
+
+    public ContentScraperSettings(boolean saveContent, boolean saveComments, boolean saveShares, boolean saveReactions, int amountOfPosts) {
         this.saveContent = saveContent;
         this.saveComments = saveComments;
         this.saveShares = saveShares;
         this.saveReactions = saveReactions;
         this.amountOfPosts = amountOfPosts;
-        this.amountOfComments = amountOfComments;
     }
 
     public boolean isSavingContent(){
@@ -55,7 +56,7 @@ public class ContentScraperSettings implements ScraperSettings {
     }
 
     @Override
-    public void setOutput(File output) {
+    public void setOutput(Path output) {
         this.outputPath = output;
     }
 
@@ -64,16 +65,16 @@ public class ContentScraperSettings implements ScraperSettings {
         return inputPath;
     }
     @Override
-    public File getOutput() {
+    public Path getOutput() {
         return outputPath;
     }
 
-    public void setAsynchronous(boolean isAsynchronous) {
-        this.isAsynchronous = isAsynchronous;
+    public void setAmountOfComments (int amountOfComments) {
+        this.amountOfComments = amountOfComments;
     }
 
-    public boolean isAsynchronous() {
-        return isAsynchronous;
+    public void setAmountOfShares (int amountOfShares) {
+        this.amountOfShares = amountOfShares;
     }
 
     public void setInstanceCount(int instanceCount) {
@@ -92,7 +93,7 @@ public class ContentScraperSettings implements ScraperSettings {
         else output.append("false\n");
 
         output.append("Scraping comments: ");
-        if(saveComments) output.append("true\n");
+        if(saveComments) output.append("true (").append(this.amountOfComments).append(") \n");
         else output.append("false\n");
 
         output.append("Scraping reactions: ");
@@ -100,7 +101,7 @@ public class ContentScraperSettings implements ScraperSettings {
         else output.append("false\n");
 
         output.append("Scraping shares: ");
-        if(saveShares) output.append("true\n");
+        if(saveShares) output.append("true (").append(this.amountOfShares).append(")\n");
         else output.append("false\n");
 
         output.append("Scraping ");
@@ -116,5 +117,13 @@ public class ContentScraperSettings implements ScraperSettings {
 
     public int getAmountOfComments() {
         return amountOfComments;
+    }
+
+    public boolean isHeadless() {
+        return headless;
+    }
+
+    public void setHeadless(boolean headless) {
+        this.headless = headless;
     }
 }

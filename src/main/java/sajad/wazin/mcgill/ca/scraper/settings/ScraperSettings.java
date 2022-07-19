@@ -1,6 +1,7 @@
 package sajad.wazin.mcgill.ca.scraper.settings;
 
 import java.io.File;
+import java.nio.file.Path;
 
 /**
  * @author Sajad Wazin @ https://github.com/swzn
@@ -10,8 +11,9 @@ import java.io.File;
 
 public interface ScraperSettings {
     void setInput(File input);
-    void setOutput(File output);
+    void setOutput(Path output);
+    void setHeadless(boolean headless);
     File getInput();
-    File getOutput();
+    Path getOutput();
     String toString();
 }

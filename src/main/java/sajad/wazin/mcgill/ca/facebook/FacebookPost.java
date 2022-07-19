@@ -23,9 +23,17 @@ public class FacebookPost {
     private final WebElement postContainer;
     private boolean nullBoolean = false;
 
+
+    /*
+    * This constructor will create an Object that can manipulate a post-identified Facebook page, given that the
+    * String in the container leads to the HTML element in which the post lives.
+    * */
+
     public FacebookPost(String pathToContainer, BrowserController globalController) {
         this.globalController = globalController;
         List<WebElement> elements = globalController.getDriver().findElements(By.cssSelector(pathToContainer));
+
+        // Determine if the post's HTML element is null
         if(elements.size() == 0) {
             nullBoolean = true;
             globalController.runJavaScript("window.close()");
@@ -33,27 +41,36 @@ public class FacebookPost {
             postContainer = null;
         }
         else {
+            // If not, then instantiate the WebElement to the post's HTML element
             this.postContainer = elements.get(0);
         }
     }
 
     public List<String> getComments(int maxComments){
+
         ArrayList<String> comments = new ArrayList<>();
+
+
         List<WebElement> commentsSection = postContainer.findElements(By.cssSelector(getCSSAsString("div", "class", "stjgntxs ni8dbmo4 l82x9zwi uo3d90p7 h905i5nu monazrh9")));
         if(commentsSection.isEmpty()) {
-            throw new IllegalArgumentException("Comments cannot be read");
+            return comments;
         }
         WebElement commentsContainer = commentsSection.get(0);
         List<WebElement> loadComments = commentsSection.get(0).findElements(By.cssSelector(getCSSAsString("div", "class", "j83agx80 bkfpd7mw jb3vyjys hv4rvrfc qt6c0cv9 dati1w0a l9j0dhe7")));
         while (loadComments.size() > 1) {
             if (!loadComments.get(1).getText().startsWith("View")) break;
-            globalController.wait(3);
+            globalController.wait(10);
             if (!commentsContainer.findElements(By.cssSelector(getCSSAsString("div", "class", "j83agx80 bp9cbjyn"))).isEmpty()) {
                 String[] text = commentsContainer.findElement(By.cssSelector(getCSSAsString("div", "class", "j83agx80 bp9cbjyn"))).getText().split(" ");
                 if(parseFormattedNumber(text[0]) > maxComments) break;
             }
-            globalController.wait(3);
-            loadComments.get(1).click();
+            globalController.wait(5);
+            try {
+                loadComments.get(1).click();
+            }
+            catch (Exception e) {
+                break;
+            }
             globalController.wait(3);
             loadComments = commentsContainer.findElements(By.cssSelector(getCSSAsString("div", "class", "j83agx80 bkfpd7mw jb3vyjys hv4rvrfc qt6c0cv9 dati1w0a l9j0dhe7")));
         }

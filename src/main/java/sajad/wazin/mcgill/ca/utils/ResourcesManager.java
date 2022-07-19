@@ -1,13 +1,16 @@
-package sajad.wazin.mcgill.ca;
+package sajad.wazin.mcgill.ca.utils;
 
+
+import sajad.wazin.mcgill.ca.FacebookWebScraper;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Properties;
+
+import static sajad.wazin.mcgill.ca.FacebookWebScraper.LOGGER;
 
 
 /**
@@ -68,14 +71,26 @@ public class ResourcesManager {
     }
 
     public void deleteTemp(){
-        System.out.println("Deleting!");
+        LOGGER.log("Deleting temporary files...");
         if(getTempDir().toFile().exists()) {
             for (String innerFile : getTempDir().toFile().list()){
-                new File(getTempDir().toFile().getPath(), innerFile).delete();
+                File currentDeletable = new File(getTempDir().toFile().getPath(), innerFile);
+                if(currentDeletable.delete()) {
+                    if(getTempDir().toFile().delete()) {
+                        LOGGER.log("Deleted temporary file " +  currentDeletable.getName() + "!");
+                    }
+                    else {
+                        LOGGER.log("Error deleting temporary file at path:" + currentDeletable.getAbsolutePath());
+                    }
+                }
             }
-            getTempDir().toFile().delete();
+            if(getTempDir().toFile().delete()) {
+                LOGGER.log("Deleted temporary folder");
+            }
+            else {
+                LOGGER.log("Error deleting temporary folder at path: " + getTempDir().toFile().getAbsolutePath());
+            }
         }
-        System.out.println("Deleted!");
     }
 
 }

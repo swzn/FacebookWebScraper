@@ -12,7 +12,5 @@ import java.util.List;
 
 public interface Searcher {
     void add(String link);
-    void add(List<String> linksToAdd);
-    void add(List<String> linkToAdd, int amount);
-    int search(int currentDepth);
+    int search();
 }

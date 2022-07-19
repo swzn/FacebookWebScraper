@@ -4,6 +4,7 @@ import sajad.wazin.mcgill.ca.scraper.interactions.InteractionModeEnum;
 import sajad.wazin.mcgill.ca.scraper.search.SearcherEnum;
 
 import java.io.File;
+import java.nio.file.Path;
 
 /**
  * @author Sajad Wazin @ https://github.com/swzn
@@ -16,9 +17,10 @@ public class SuggestionsScraperSettings implements ScraperSettings {
     private InteractionModeEnum interactionMode;
     private SearcherEnum searcher;
     private File inputPath;
-    private File outputPath;
+    private Path outputPath;
     private final int maxDepth;
     private final int maxGrowth;
+    private boolean headless;
 
     public SuggestionsScraperSettings(InteractionModeEnum interactionMode, SearcherEnum searcher, int maxDepth, int maxGrowth){
         this.interactionMode = interactionMode;
@@ -33,7 +35,7 @@ public class SuggestionsScraperSettings implements ScraperSettings {
     }
 
     @Override
-    public void setOutput(File output) {
+    public void setOutput(Path output) {
         this.outputPath = output;
     }
 
@@ -42,7 +44,7 @@ public class SuggestionsScraperSettings implements ScraperSettings {
         return inputPath;
     }
     @Override
-    public File getOutput() {
+    public Path getOutput() {
         return outputPath;
     }
 
@@ -56,5 +58,13 @@ public class SuggestionsScraperSettings implements ScraperSettings {
 
     public SearcherEnum getSearcher() {
         return searcher;
+    }
+
+    public boolean isHeadless() {
+        return headless;
+    }
+
+    public void setHeadless(boolean headless) {
+        this.headless = headless;
     }
 }

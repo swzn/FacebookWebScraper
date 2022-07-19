@@ -7,6 +7,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import sajad.wazin.mcgill.ca.FacebookWebScraper;
 
 /**
  * @author Sajad Wazin @ https://github.com/swzn
@@ -32,12 +33,20 @@ public class LoginButton extends Button {
     EventHandler<ActionEvent> lockingEvent = new EventHandler<>() {
         @Override
         public void handle(ActionEvent event) {
+            if(userField.getText().isEmpty() || passField.getText().isEmpty()) {
+                new DialogBox("Please enter valid credentials...").show();
+                return;
+            }
+
             // Lock the user/pass fields
             userField.setEditable(false);
             passField.setEditable(false);
 
             // Display a dialog to let the user know that the credentials have been locked
             new DialogBox("Log-in credentials have been locked in the system!").show();
+            FacebookWebScraper.LOGIN.setEmail(userField.getText());
+            FacebookWebScraper.LOGIN.setPassword(passField.getText());
+
 
             // Morph the button into an "unlock" button in case the user needs to change credentials
             LoginButton login = ((LoginButton) event.getSource());

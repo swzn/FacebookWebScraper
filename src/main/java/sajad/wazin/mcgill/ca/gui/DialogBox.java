@@ -7,8 +7,9 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import sajad.wazin.mcgill.ca.ResourcesManager;
+import sajad.wazin.mcgill.ca.utils.ResourcesManager;
 
 /**
  * @author Sajad Wazin @ https://github.com/swzn
@@ -40,12 +41,15 @@ public class DialogBox {
         grid.setVgap(40);
         grid.add(new Text(message), 0,0);
 
-        //Create the button to close the pop-up
+        // Create the button to close the pop-up
         Button ok = new Button("OK");
         ok.setOnAction(e->{
             dialogStage.hide();
         });
         grid.add(ok, 0,1);
+
+        // Modality property sets the focus on the pop-up
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
 
         // Display pop-up
         dialogPane.getChildren().add(grid);
