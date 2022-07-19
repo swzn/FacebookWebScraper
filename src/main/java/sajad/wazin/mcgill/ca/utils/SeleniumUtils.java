@@ -1,6 +1,8 @@
 package sajad.wazin.mcgill.ca.utils;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import sajad.wazin.mcgill.ca.FacebookWebScraper;
 import sajad.wazin.mcgill.ca.chrome.BrowserController;
 
 /**
@@ -10,6 +12,8 @@ import sajad.wazin.mcgill.ca.chrome.BrowserController;
  */
 
 public class SeleniumUtils {
+
+    // Get CSSSelector from strings
     public static String getCSSAsString(String htmlElement, String cssTag, String value) {
         return htmlElement +
                 "[" +
@@ -19,6 +23,7 @@ public class SeleniumUtils {
                 "\"]";
     }
 
+    // Parse the formatted facebook reaction numbers
     public static int parseReactionNumber(String number){
         StringBuilder parsedNumber = new StringBuilder();
         for (int i = 0; i < number.length(); i++) {
@@ -43,6 +48,7 @@ public class SeleniumUtils {
         return Integer.parseInt(parsedNumber.toString());
     }
 
+    // Parse a formatted number into an integer
     public static int parseFormattedNumber(String number){
         StringBuilder parsedNumber = new StringBuilder();
         for (int i = 0; i < number.length(); i++) {
@@ -51,7 +57,13 @@ public class SeleniumUtils {
         return Integer.parseInt(parsedNumber.toString());
     }
 
+    // Highlight a given webelement
     public static void highlightWebElement(WebElement webElement, BrowserController controller) {
         controller.runJavaScript("arguments[0].style.border='1px solid red'", webElement);
+    }
+
+    // Retrieve xPath selector from FacebookWebScraper.properties
+    public static By getSelector(String key){
+        return By.cssSelector(FacebookWebScraper.RESOURCES.getResource(key));
     }
 }

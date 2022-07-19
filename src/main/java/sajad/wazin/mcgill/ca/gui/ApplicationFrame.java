@@ -17,6 +17,8 @@ import sajad.wazin.mcgill.ca.scraper.settings.SuggestionsScraperSettings;
 import java.io.File;
 import java.nio.file.Path;
 
+import static sajad.wazin.mcgill.ca.FacebookWebScraper.*;
+
 /**
  * @author Sajad Wazin @ https://github.com/swzn
  * @project FacebookWebScraper
@@ -30,6 +32,7 @@ public class ApplicationFrame {
     private PasswordField passField;
     private LoginButton loginButton;
     private SettingsDialog settingsDialog;
+
 
     private GridPane loggerMessages;
 
@@ -91,6 +94,7 @@ public class ApplicationFrame {
             }
             generateFileChoosers();
             generateScrapeButton();
+            //Retrieve the scraper enum through the dropdown
             settingsDialog = new SettingsDialog(ScraperEnum.getScraper(scrapingModes.getSelectionModel().getSelectedItem()));
             settingsDialog.show();
         });
@@ -153,17 +157,37 @@ public class ApplicationFrame {
     }
 
     private void generateScrapeButton(){
+        // Generate the button
         Button scrapeButton = new Button("Start Scraping");
 
+        // Instantiate the log panel
         ScrollPane loggingPane = new ScrollPane();
         loggingPane.setPrefSize(300, 200);
         loggingPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
+        // Create the underlying grid structure to add each log message
         loggerMessages = new GridPane();
         loggingPane.setContent(loggerMessages);
 
+        // Generate the "headless" button to allow chrome to run invisibly
         CheckBox headless = new CheckBox("GUI-less Chrome");
 
+        // Show the button and the checkbox
+        applicationGrid.add(headless, 0, 5);
+        applicationGrid.add(scrapeButton, 0, 6);
+
+        // Create a button to stop the task
+        Button cancelTask = new Button("Cancel task as soon as possible");
+        cancelTask.setOnAction(actionEvent -> {
+            FacebookWebScraper.CANCELLED_TASK = true;
+            LOGGER.log("Task will be cancelled after the current scrape!");
+            cancelTask.setDisable(true);
+        });
+
+        // Create a button to dump current memory
+        Button dumpMemory = new Button("Dump current memory");
+
+        // Validating input and adding logic to the scrape button
         scrapeButton.setOnAction(actionEvent -> {
             if(!getLoginButton().isLocked()) {
                 new DialogBox("Please lock your credentials!").show();
@@ -178,35 +202,66 @@ public class ApplicationFrame {
                 new DialogBox("Please choose an output file!").show();
             }
             else {
+                // If all input is valid, disable the GUI
                 for(Node node : applicationGrid.getChildren()) {
                     node.setDisable(true);
                 }
-                applicationGrid.add(loggingPane,0 ,7);
-                FacebookWebScraper.LOGGER.setLogger(loggerMessages);
-                FacebookWebScraper.LOGGER.log("GUI disabled");
-                FacebookWebScraper.LOGGER.log("Scraping will begin shortly...");
 
+                // Show the logging pane
+                applicationGrid.add(loggingPane,0 ,7);
+                LOGGER.setLogger(loggerMessages);
+
+                LOGGER.log("GUI disabled");
+                LOGGER.log("Scraping will begin shortly...");
+
+                // Update the settings
                 ScraperSettings currentSettings = settingsDialog.getScraperSettings();
                 currentSettings.setHeadless(headless.isSelected());
                 currentSettings.setInput(selectedInput);
                 currentSettings.setOutput(Path.of(selectedOutput.toURI()));
 
+                // Run the scraper on a different thread to not kill the GUI
                 Thread scraperExecutor = new Thread (() -> {
                     if (currentSettings instanceof ContentScraperSettings) {
-                        ContentScraper scraper = new ContentScraper(currentSettings);
+                         ContentScraper scraper = new ContentScraper(currentSettings);
                         scraper.runScraper();
                     } else if (currentSettings instanceof SuggestionsScraperSettings) {
                         SuggestionsScraper scraper = new SuggestionsScraper(currentSettings);
                         scraper.runScraper();
                     }
                 });
+
+                FacebookWebScraper.PERSISTENCE_SERVICE.setOutput(Path.of(selectedOutput.toURI()));
                 scraperExecutor.start();
+
+                GridPane controlPanel = new GridPane();
+                controlPanel.setVgap(10);
+                // Instantiate the dump button
+                dumpMemory.setOnAction(dumpEvent -> {
+                    DUMP_MANAGER.dump(Path.of(currentSettings.getOutput().toString() + "\\dump"));
+                    LOGGER.log("Attempting to dump memory...");
+                });
+
+                controlPanel.add(cancelTask, 0, 0);
+                controlPanel.add(dumpMemory, 0, 1);
+
+                // Create a "Kill Process" button
+                Button kill = new Button("Kill current process");
+                kill.setOnAction(killAction -> {
+                    CONTROLLER_POOL.kill();
+                    LOGGER.log("Process has been killed");
+                    DUMP_MANAGER.dump(Path.of(currentSettings.getOutput().toString() + "\\killed_process"));
+                    System.exit(0);
+                });
+
+                controlPanel.add(kill, 0, 2);
+                applicationGrid.add(controlPanel, 1,7);
             }
         });
-        applicationGrid.add(headless, 0, 5);
-        applicationGrid.add(scrapeButton, 0, 6);
+
     }
 
+    // When first booted, all that should be seen is the login prompt and the scraper dropdown
     public void initialize(){
         generateLoginPrompt();
         generateScrapingDropdown();

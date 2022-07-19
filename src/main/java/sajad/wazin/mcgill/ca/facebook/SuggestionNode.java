@@ -18,6 +18,12 @@ public class SuggestionNode {
 
     private List<SuggestionNode> children;
 
+
+    /*
+    * Treelike data structure to search recursively through suggestions
+    * Also allows to encode a search's outcome in JSON by recursively encoding nodes
+    * */
+
     public SuggestionNode(String link, int depth) {
         this.link = link;
         this.depth = depth;

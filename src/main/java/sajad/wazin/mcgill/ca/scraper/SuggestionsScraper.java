@@ -1,5 +1,6 @@
 package sajad.wazin.mcgill.ca.scraper;
 
+
 import sajad.wazin.mcgill.ca.FacebookWebScraper;
 import sajad.wazin.mcgill.ca.chrome.BrowserController;
 import sajad.wazin.mcgill.ca.facebook.SuggestionNode;
@@ -28,6 +29,8 @@ import static sajad.wazin.mcgill.ca.FacebookWebScraper.*;
 public class SuggestionsScraper implements Scraper {
 
     private SuggestionsScraperSettings settings;
+    public int unknownErrorsInARow = 0;
+
     public HashMap<String, SuggestionNode> suggestionsMap;
     private int maxGrowth;
     private int maxDepth;
@@ -41,18 +44,19 @@ public class SuggestionsScraper implements Scraper {
         maxGrowth = settings.getMaxGrowth();
         maxDepth = settings.getMaxDepth();
         suggestionsMap = new HashMap<>();
-        validateInput();
+        DUMP_MANAGER.addRaw(suggestionsMap);
     }
 
-    private void validateInput(){
-
-    }
 
     @Override
     public void runScraper() {
+        // Read the input file
         List<String> links = PersistenceService.readLines(settings.getInput());
 
+        // Start chrome
         BrowserController controller = new BrowserController(settings.isHeadless());
+
+        // Initialize the searcher
         Searcher currentSearcher;
         if(settings.getSearcher() == SearcherEnum.BFS) currentSearcher = new BFSSearcher(maxDepth, maxGrowth, controller, suggestionsMap);
         else if(settings.getSearcher() == SearcherEnum.DFS) currentSearcher = new DFSSearcher(maxDepth, maxGrowth, controller, suggestionsMap);
@@ -62,10 +66,14 @@ public class SuggestionsScraper implements Scraper {
         }
 
 
-        controller.initialize();
-        controller.sleep(10000);
+        if(!controller.initialize()) return;
 
+        // Start scraping from each root
         List<SuggestionNode> roots = new ArrayList<>();
+
+        // add root to the dump manager
+        DUMP_MANAGER.addRoots(roots);
+
         for(String link : links) {
             SuggestionNode root = new SuggestionNode(link, 0);
             suggestionsMap.put(link, root);
@@ -75,15 +83,20 @@ public class SuggestionsScraper implements Scraper {
             try {
                 currentSearcher.search();
             } catch (Exception e) {
-                LOGGER.log("Error found");
-                LOGGER.log(e.getMessage());
+                LOGGER.log("Unknown Error found");
+                unknownErrorsInARow++;
+                if(unknownErrorsInARow >= MAX_ERRORS_BEFORE_STOP) CANCELLED_TASK = true;
             }
         }
 
-        controller.getDriver().quit();
+        CONTROLLER_POOL.kill(controller);
 
-        RESOURCES.deleteTemp();
-        PERSISTENCE_SERVICE.saveJSONFile(Encoder.encodeRoots(roots), settings.getOutput());
-        PERSISTENCE_SERVICE.saveListFile(new ArrayList<>(suggestionsMap.keySet()), settings.getOutput());
+        if(CANCELLED_TASK) LOGGER.log("Task has been cancelled");
+        LOGGER.log("Task has completed with " + suggestionsMap.size() + " unique suggestions");
+
+        // Encode the output in JSON and in a txt file
+        PERSISTENCE_SERVICE.saveJSONFile(Encoder.encodeRoots(roots), settings.getOutput(), "suggestions");
+        PERSISTENCE_SERVICE.saveListFile(new ArrayList<>(suggestionsMap.keySet()), settings.getOutput(), "raw");
+        LOGGER.outputLog();
     }
 }

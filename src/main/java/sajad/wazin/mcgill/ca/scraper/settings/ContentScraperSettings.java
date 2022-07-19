@@ -24,6 +24,11 @@ public class ContentScraperSettings implements ScraperSettings {
     private int amountOfPosts = 2;
     private int amountOfComments = 10;
     private int instanceCount = 1;
+
+    public int getAmountOfShares() {
+        return amountOfShares;
+    }
+
     private int amountOfShares;
 
     //Optional boolean
@@ -119,6 +124,7 @@ public class ContentScraperSettings implements ScraperSettings {
         return amountOfComments;
     }
 
+    // Runs chrome without showing
     public boolean isHeadless() {
         return headless;
     }

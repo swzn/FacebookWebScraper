@@ -13,6 +13,8 @@ import sajad.wazin.mcgill.ca.utils.SeleniumUtils;
 import java.time.Duration;
 import java.util.ArrayList;
 
+import static sajad.wazin.mcgill.ca.FacebookWebScraper.*;
+
 
 /**
  * @author Sajad Wazin @ https://github.com/swzn
@@ -42,22 +44,33 @@ public class BrowserController {
         options.addArguments("--disable-notifications", "--disable-gpu", "--disable-extensions", "--disable-logging", "--log-level=3", "--disable-logging-redirect");
         if(headless) options.addArguments("--headless");
         driver = new ChromeDriver(options);
+        CONTROLLER_POOL.addController(this);
     }
 
     /*
-    * Prepares the window to be used for scraping. This assumes that the login is a valid Facebook login and the case
-    * where the credentials are invalid is not handled by this software.
+    * Prepares the window to be used for scraping and logs into Facebook. If the login is invalid, then kill the process
     * */
-    public void initialize(){
+    public boolean initialize(){
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
         driver.get("https://facebook.com");
 
-        getFirstElementById("email").sendKeys(FacebookWebScraper.LOGIN.getEmail());
-        getFirstElementById("pass").sendKeys(FacebookWebScraper.LOGIN.getPassword());
+        getFirstElementById("email").sendKeys(LOGIN.getEmail());
+        getFirstElementById("pass").sendKeys(LOGIN.getPassword());
 
         getFirstElementByName("login").click();
 
+        sleep(10000);
+
+        if(getDriver().findElements(By.id("email")).isEmpty()) {
+            LOGGER.log("Login successful for " + LOGIN.getEmail());
+            return true;
+        }
+        else {
+            LOGGER.log("Login unsuccessful, terminating chrome...");
+            CONTROLLER_POOL.kill(this);
+            return false;
+        }
 
     }
 

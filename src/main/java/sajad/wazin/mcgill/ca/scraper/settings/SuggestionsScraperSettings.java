@@ -60,6 +60,7 @@ public class SuggestionsScraperSettings implements ScraperSettings {
         return searcher;
     }
 
+    // Runs chrome without showing
     public boolean isHeadless() {
         return headless;
     }

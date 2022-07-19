@@ -19,6 +19,11 @@ public class PostData {
 
     private String postURL;
 
+    /*
+    * Augmented Data structure to keep track of a post and all of its data
+    * Constructor requires only the post URL to be able to encode this data into JSON
+    * Methods allow methods and classes to update a post's data by giving it valid parameters
+    * */
     public PostData(String postURL){
         this.postURL = postURL;
 

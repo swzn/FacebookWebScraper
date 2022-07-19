@@ -9,6 +9,9 @@ import javafx.scene.control.ComboBox;
  */
 
 public class StringDropdown extends ComboBox<String> {
+    /*
+    * Constructor that inherits from a combobox and quickly creates a string dropdown node
+    * */
 
     public StringDropdown(String... dropdownElements){
         for(String element : dropdownElements) {

@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 
 public class FXUtils {
 
+    // Given a TextField node, this methods adds a listener that only allows integers to be added to the field
     public static void setIntegerListener(TextField field) {
         field.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("[\\d]*")) {

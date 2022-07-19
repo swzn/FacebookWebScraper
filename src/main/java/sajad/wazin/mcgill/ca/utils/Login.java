@@ -8,7 +8,6 @@ package sajad.wazin.mcgill.ca.utils;
 
 public class Login {
 
-
     private String email;
     private String password;
 
