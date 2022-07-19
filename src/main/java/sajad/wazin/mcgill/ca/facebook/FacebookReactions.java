@@ -14,6 +14,12 @@ public class FacebookReactions {
 
     private final int[] reactions;
 
+
+    /*
+    * The links to all emojis for reactions
+    * These may need to be updated with time
+    * */
+
     private final String LIKE_EMOJI = "https://scontent.xx.fbcdn.net/m1/v/t6/An-tsvy1nZCAfjJDq_e9hwhgJ_ouDg6GOHdVQtc31Lh3B13GEFJ0N3wRI6j2_Lz8icCyU4RkVsKbJckG5NMDv5TxxWie8OqB_kcvCNizVjn7sw.png";
     private final String LAUGH_EMOJI = "https://scontent.xx.fbcdn.net/m1/v/t6/An9yRlv3tqyIsDTiKV0WfMgtabNG9VPyvNiv5USdzPe0Cbp2FdNMvbGH1mvTvI8TczUcd9kED-M5Q1z9-fVK3zAMCRSiYtsWTpWSid0DJlPasg.png";
     private final String WOW_EMOJI = "https://scontent.xx.fbcdn.net/m1/v/t6/An_f5KryEO3JdbkuRbEs1ixj8HC8itKTXvZ3Hl1c-zaREaiMDPCRTNw6CSwRUjKkq_YXEuxmsqBu06WIeteZ7MBZ2WKuJXvOK6WdOQfGi2Ixg9Sd.png";
@@ -22,11 +28,21 @@ public class FacebookReactions {
     private final String SAD_EMOJI = "https://scontent.xx.fbcdn.net/m1/v/t6/An9Yzzh8CoEGqeWIfY5w6zR3VdPbG5X1fHXZdMfftnoomx3ObysBj145G99ZhM1T6DcU_ZAH2bEdiOj8sUAQvplVo0cYKS_GprBBJlcwiBHomFx7hQ.png";
     private final String MAD_EMOJI = "https://scontent.xx.fbcdn.net/m1/v/t6/An-mj0uPEZ5b6GVy3OC-_ZMV1AGoboZI3SG9P2r3WElt054OlpAmUSq9QPU0i9RdhF07UwCRHIsC06i-w4_VCrnJnBEent1vmcy8MXOQt0msew.png";
 
-    // 0:likes 1:heart 2:holding_hearts 3:laughing 4:wow 5:sad 6:mad
-
+    /*
+    * Using an Integer array as the underlying data structure to store reactions
+    * The reactions are indexed as such
+    * 0:likes 1:heart 2:holding_hearts 3:laughing 4:wow 5:sad 6:mad
+    */
     public FacebookReactions(){
         reactions = new int[7];
     }
+
+
+    /*
+    * Basic setters and getters
+    * Setters are private so that no method or class can update a Reaction object without giving an image as a parameter
+    * Getters are public so that any class or method can access a specific reaction
+    * */
 
     private void setLikes(int likes) {
         reactions[0] = likes;
@@ -84,7 +100,11 @@ public class FacebookReactions {
         return reactions[6];
     }
 
-    public void setReaction(String IMAGE_URL, String numbers){
+    /*
+    * Using a switch-like statement to relate the image url to the reaction.
+    * Parses the formatted number of reactions to retrieve an integer
+    * */
+    public void setReaction(String IMAGE_URL, String numbers) {
         int value = SeleniumUtils.parseReactionNumber(numbers);
         if(IMAGE_URL.startsWith(LIKE_EMOJI)) {
             setLikes(value);
@@ -109,6 +129,9 @@ public class FacebookReactions {
         }
     }
 
+    /*
+    * Basic toString() method for testing purposes
+    * */
     public String toString(){
         StringBuilder stringValue = new StringBuilder();
         stringValue.append("Reactions on this post: \n");

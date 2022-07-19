@@ -29,6 +29,10 @@ public class ResourcesManager {
 
     private Path currTmpDir;
 
+    /*
+    * Resources Manager is responsible for internal I/O. It is as singleton class
+    * */
+
     private ResourcesManager() {
         properties = new Properties();
 
@@ -51,14 +55,17 @@ public class ResourcesManager {
         }
     }
 
-    public String getResource(String resourceKey){
+    // gets value of "resourceKey" in FacebookWebScraper.properties
+    public String getResource(String resourceKey) {
         return properties.getProperty(resourceKey);
     }
 
+    // gets the path of the temporary chromedriver.exe file on disk
     public String getChromeDriverPath(){
         return currTmpDir.toAbsolutePath().toString() + "\\chromedriver.exe";
     }
 
+    // Singleton instantiation
     public static ResourcesManager getResourceManager() {
         if(RESOURCES == null) {
             RESOURCES = new ResourcesManager();
@@ -70,6 +77,7 @@ public class ResourcesManager {
         return currTmpDir;
     }
 
+    // Delete temporary files after execution has completed
     public void deleteTemp(){
         LOGGER.log("Deleting temporary files...");
         if(getTempDir().toFile().exists()) {
@@ -83,12 +91,6 @@ public class ResourcesManager {
                         LOGGER.log("Error deleting temporary file at path:" + currentDeletable.getAbsolutePath());
                     }
                 }
-            }
-            if(getTempDir().toFile().delete()) {
-                LOGGER.log("Deleted temporary folder");
-            }
-            else {
-                LOGGER.log("Error deleting temporary folder at path: " + getTempDir().toFile().getAbsolutePath());
             }
         }
     }

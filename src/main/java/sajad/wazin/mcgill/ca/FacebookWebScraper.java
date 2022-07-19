@@ -13,24 +13,32 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 
+import sajad.wazin.mcgill.ca.chrome.ControllerPool;
 import sajad.wazin.mcgill.ca.gui.ApplicationFrame;
 import sajad.wazin.mcgill.ca.gui.LoginButton;
 import sajad.wazin.mcgill.ca.persistence.PersistenceService;
+import sajad.wazin.mcgill.ca.utils.DumpManager;
 import sajad.wazin.mcgill.ca.utils.Logger;
 import sajad.wazin.mcgill.ca.utils.Login;
 import sajad.wazin.mcgill.ca.utils.ResourcesManager;
 
 
+
 public class FacebookWebScraper extends Application {
 
+    public static final int MAX_ERRORS_BEFORE_STOP = 10;
     public static int MIN_POSTS = 5;
 
     public static Logger LOGGER = new Logger();
 
+    //Singleton instances
+    public static DumpManager DUMP_MANAGER = DumpManager.getDumpManager();
     public static ResourcesManager RESOURCES = ResourcesManager.getResourceManager();
     public static PersistenceService PERSISTENCE_SERVICE = PersistenceService.getPersistenceService();
+    public static ControllerPool CONTROLLER_POOL = ControllerPool.getControllerPool();
 
     public static Login LOGIN = new Login();
+    public static boolean CANCELLED_TASK = false;
 
     public static void main(String[] args) {
 

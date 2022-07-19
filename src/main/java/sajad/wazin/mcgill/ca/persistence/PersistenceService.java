@@ -17,11 +17,14 @@ import java.util.List;
 public class PersistenceService {
 
     private static PersistenceService PERSISTENCE_SERVICE = new PersistenceService();
-
+    private Path output;
 
     private PersistenceService() {}
 
-    public void saveJSONFile(JSONObject completedTask, Path outputFolder) {
+    /*
+    * Save a JSONObject as a file given an output folder
+    * */
+    public void saveJSONFile(JSONObject completedTask, Path outputFolder, String prefix) {
         if(!Files.exists(outputFolder)) {
             try {
                 Files.createDirectory(outputFolder);
@@ -30,7 +33,7 @@ public class PersistenceService {
             }
         }
 
-        File outputFile = new File((outputFolder.toAbsolutePath().toString() + "\\output_" + System.currentTimeMillis() + ".json"));
+        File outputFile = new File((outputFolder.toAbsolutePath().toString() + "\\" + prefix + "_" + System.currentTimeMillis() + ".json"));
 
         try {
             outputFile.createNewFile();
@@ -43,7 +46,14 @@ public class PersistenceService {
         }
     }
 
-    public void saveListFile(List<String> strings, Path outputFolder) {
+
+    /*
+    * Save a list of strings as a file to an output folder
+    * */
+    public void saveListFile(List<String> strings, Path outputFolder, String prefix) {
+        if(outputFolder == null) {
+            outputFolder = this.output;
+        }
         if(!Files.exists(outputFolder)) {
             try {
                 Files.createDirectory(outputFolder);
@@ -52,7 +62,7 @@ public class PersistenceService {
             }
         }
 
-        File outputFile = new File((outputFolder.toAbsolutePath().toString() + "\\raw_" + System.currentTimeMillis() + ".txt"));
+        File outputFile = new File((outputFolder.toAbsolutePath().toString() + "\\" + prefix + "_" + System.currentTimeMillis() + ".txt"));
 
         try {
             outputFile.createNewFile();
@@ -67,6 +77,10 @@ public class PersistenceService {
         }
     }
 
+
+    /*
+    * Read a file and output a list of strings that will contain each line in the file
+    * */
     public static List<String> readLines(File file) {
         List<String> outputStrings = new ArrayList<>();
 
@@ -87,6 +101,10 @@ public class PersistenceService {
 
     public static PersistenceService getPersistenceService() {
         return PERSISTENCE_SERVICE;
+    }
+
+    public void setOutput(Path path) {
+        this.output = path;
     }
 
 }

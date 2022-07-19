@@ -17,6 +17,10 @@ import java.util.List;
 
 public class Encoder {
 
+
+    /* (ContentScraper)
+    * Recursively encode all pages given their list of post datas
+    * */
     public static JSONObject encodePages(HashMap<String, List<PostData>> listOfPages){
         JSONObject pages = new JSONObject();
         for(String key : listOfPages.keySet()) {
@@ -26,6 +30,10 @@ public class Encoder {
         return pages;
     }
 
+
+    /* (ContentScraper)
+    * Recursively encode a page given its list of post data
+    * */
     public static JSONObject encodePage(List<PostData> statsList){
         JSONObject pageObject = new JSONObject();
 
@@ -40,6 +48,10 @@ public class Encoder {
         return pageObject;
     }
 
+
+    /* (ContentScraper)
+    * Encode the post data for a specific post
+    * */
     public static JSONObject encodePost(PostData aPost){
         JSONObject postObject = new JSONObject();
         postObject.put("shares", aPost.getShares().toArray());
@@ -49,6 +61,7 @@ public class Encoder {
         postObject.put("url", aPost.getPostURL());
         return postObject;
     }
+
 
     private static JSONObject encodeReactions(FacebookReactions facebookReactions){
         JSONObject reactionsObject = new JSONObject();
@@ -64,6 +77,10 @@ public class Encoder {
         return reactionsObject;
     }
 
+
+    /* (SuggestionScraper)
+    * Recursively encode all children of a root in a treelike structure
+    * */
     public static JSONObject encodeRoots(List<SuggestionNode> roots) {
         JSONArray rootsArray = new JSONArray();
         for(SuggestionNode root : roots) {
@@ -74,6 +91,10 @@ public class Encoder {
 
         return rootsObject;
     }
+
+    /* (SuggestionsScraper)
+    * Recursively encode each node
+    * */
 
     private static JSONObject encodeNode(SuggestionNode node) {
         JSONObject nodeObject = new JSONObject();

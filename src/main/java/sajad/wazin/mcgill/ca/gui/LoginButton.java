@@ -44,6 +44,8 @@ public class LoginButton extends Button {
 
             // Display a dialog to let the user know that the credentials have been locked
             new DialogBox("Log-in credentials have been locked in the system!").show();
+
+            // Update the login
             FacebookWebScraper.LOGIN.setEmail(userField.getText());
             FacebookWebScraper.LOGIN.setPassword(passField.getText());
 
@@ -70,6 +72,11 @@ public class LoginButton extends Button {
             // Display a dialog to let the user know that the credentials have been reset
             new DialogBox("Log-in credentials have been reset.\nPlease input new credentials.").show();
 
+            // Update the login
+            FacebookWebScraper.LOGIN.setEmail("");
+            FacebookWebScraper.LOGIN.setPassword("");
+
+
             // Morph the button into an "unlock" button in case the user needs to change credentials
             LoginButton login = ((LoginButton) event.getSource());
             login.setText("Lock credentials");
@@ -80,6 +87,7 @@ public class LoginButton extends Button {
         }
     };
 
+    // Add an event handler that allows to use the Enter button to LOCK your logins
     public static EventHandler<KeyEvent> getEnterKeyEvent(LoginButton loginButton) {
         return keyEvent -> {
             if(!loginButton.isLocked() && keyEvent.getCode() == KeyCode.ENTER) {

@@ -48,76 +48,131 @@ public class FacebookPost {
 
     public List<String> getComments(int maxComments){
 
+
         ArrayList<String> comments = new ArrayList<>();
 
+        globalController.wait(25);
 
-        List<WebElement> commentsSection = postContainer.findElements(By.cssSelector(getCSSAsString("div", "class", "stjgntxs ni8dbmo4 l82x9zwi uo3d90p7 h905i5nu monazrh9")));
+        List<WebElement> commentsSection = postContainer.findElements(getSelector("containers.div.class.comments_section"));
+
         if(commentsSection.isEmpty()) {
             return comments;
         }
+
+        // Finds the container for all comments from the comments section
         WebElement commentsContainer = commentsSection.get(0);
-        List<WebElement> loadComments = commentsSection.get(0).findElements(By.cssSelector(getCSSAsString("div", "class", "j83agx80 bkfpd7mw jb3vyjys hv4rvrfc qt6c0cv9 dati1w0a l9j0dhe7")));
+
+        // Locates the buttons that allows the user to choose which comments to show
+        List<WebElement> commentsLoaderTab = commentsContainer.findElements(getSelector("containers.div.class.comments_loader_tab"));
+        List<WebElement> commentsLoader = commentsLoaderTab.get(0).findElements(getSelector("buttons.div.role"));
+
+        // If the button has been found, choose to show all comments
+        if(commentsLoader.size() > 0) {
+            commentsLoader.get(0).click();
+            List<WebElement> commentsOptionsMenu = globalController.getDriver().findElements(getSelector("menus.div.class.comments_options"));
+            if(commentsOptionsMenu.size() != 0) {
+                for (WebElement option : commentsOptionsMenu.get(0).findElements(getSelector("menus.div.role.comments_menu_item"))) {
+                    if(option.getText().contains("All")) {
+                        option.click();
+                    }
+                }
+            }
+
+        }
+
+        // Find the button that loads more comments at the bottom of the comment section
+        List<WebElement> loadComments = commentsSection.get(0).findElements(getSelector("buttons.a.load_comments"));
+
+        // Keep pressing it until you reached the maximum
         while (loadComments.size() > 1) {
             if (!loadComments.get(1).getText().startsWith("View")) break;
             globalController.wait(10);
-            if (!commentsContainer.findElements(By.cssSelector(getCSSAsString("div", "class", "j83agx80 bp9cbjyn"))).isEmpty()) {
-                String[] text = commentsContainer.findElement(By.cssSelector(getCSSAsString("div", "class", "j83agx80 bp9cbjyn"))).getText().split(" ");
+            if (!commentsContainer.findElements(getSelector("containers.div.class.comment_count")).isEmpty()) {
+                String[] text = commentsContainer.findElement(getSelector("containers.div.class.comment_count")).getText().split(" ");
+
+                // Find the "X of Y" text area and check if X surpasses the maximum comments to scrape
                 if(parseFormattedNumber(text[0]) > maxComments) break;
             }
             globalController.wait(5);
+
+            // If we have not surpassed the limit, press the button
             try {
                 loadComments.get(1).click();
             }
+
+            // If an error occurs, stop pressing the button
             catch (Exception e) {
                 break;
             }
+
             globalController.wait(3);
-            loadComments = commentsContainer.findElements(By.cssSelector(getCSSAsString("div", "class", "j83agx80 bkfpd7mw jb3vyjys hv4rvrfc qt6c0cv9 dati1w0a l9j0dhe7")));
+            loadComments = commentsContainer.findElements(getSelector("buttons.a.load_comments"));
         }
+
         globalController.wait(2);
 
 
-        List<WebElement> commentsList = commentsContainer.findElements(By.cssSelector(getCSSAsString("div", "class", "ecm0bbzt e5nlhep0 a8c37x1j")));
+        // Load all comments and add it to the ArrayList
+        List<WebElement> commentsList = commentsContainer.findElements(getSelector("containers.div.class.comment"));
         for(int i = 0; i < commentsList.size(); i++) {
             if(i == maxComments) break;
             comments.add(commentsList.get(i).getText());
         }
+
         return comments;
     }
 
     public FacebookReactions getReactions() {
+
+        // Create a new Reactions object to store the output
         FacebookReactions reactions = new FacebookReactions();
         globalController.wait(10);
 
-        List<WebElement> reactionsButton = postContainer.findElements(By.cssSelector(getCSSAsString("div", "class", "oajrlxb2 g5ia77u1 qu0x051f esr5mh6w e9989ue4 r7d6kgcz rq0escxv nhd2j8a9 p7hjln8o kvgmc6g5 cxmmr5t8 oygrvhab hcukyx3x jb3vyjys rz4wbd8a qt6c0cv9 a8nywdso i1ao9s8h esuyzwwr f1sip0of n00je7tq arfg74bv qs9ysxi8 k77z8yql l9j0dhe7 abiwlrkh p8dawk7l lzcic4wl gmql0nx0 ce9h75a5 ni8dbmo4 stjgntxs tkr6xdv7 a8c37x1j")));
+        // Find the button that will open the reactions tab
+        List<WebElement> reactionsButton = postContainer.findElements(getSelector("buttons.div.class.open_reactions_tab"));
         if(reactionsButton.size() == 0) {
             return reactions;
         }
+
         globalController.runJavaScript("arguments[0].click();", reactionsButton.get(0));
+
+        // Find the container for the reactions pop-up
         WebElement reactionContainer = globalController.getFirstElementByCSS("div", "aria-label", "Reactions");
+
+        // List all the reaction tabs
         List<WebElement> reactionTabs = reactionContainer.findElements(By.cssSelector(getCSSAsString("div", "role", "tab")));
 
         for(int i = 0; i < reactionTabs.size(); i++) {
             if(reactionTabs.get(i) != null) {
                 globalController.wait(5);
                 String textField = reactionTabs.get(i).getText();
+
+                // Skip empty or "All" tab
                 if(textField.equals("All") || textField.equals("")) {
                     continue;
                 }
                 if(textField.equals("More") && reactionTabs.get(i).getAttribute("aria-hidden").equals("false")) {
+
+                    // For the "more" tab, click on it and read the reactions individually
                     reactionTabs.get(i).click();
                     globalController.wait(5);
-                    WebElement moreReactionsContainer = globalController.getDriver().findElement(By.cssSelector(getCSSAsString("div", "class", "rpm2j7zs k7i0oixp gvuykj2m ni8dbmo4 du4w35lb q5bimw55 ofs802cu pohlnb88 dkue75c7 mb9wzai9 l56l04vs r57mb794 l9j0dhe7 kh7kg01d eg9m0zos c3g1iek1 gs1a9yip rq0escxv j83agx80 cbu4d94t rz4wbd8a a8nywdso smdty95z c1zf3a5g gu2zta1c k4urcfbm")));
-                    List<WebElement> allMoreTabs = moreReactionsContainer.findElements(By.cssSelector(getCSSAsString("div", "role", "menuitemradio")));
+
+                    // Read from the reactions dropdown
+                    WebElement moreReactionsContainer = globalController.getDriver().findElement(getSelector("menus.div.class.more_reactions"));
+                    List<WebElement> allMoreTabs = moreReactionsContainer.findElements(getSelector("menus.div.role.reactions_menu_item"));
                     for (int j = 0; j < allMoreTabs.size(); j++) {
                         SeleniumUtils.highlightWebElement(allMoreTabs.get(j), globalController);
-                        String imageURL = allMoreTabs.get(j).findElement(By.cssSelector(getCSSAsString("img","class","hu5pjgll bixrwtb6"))).getAttribute("src");
+
+                        // Use the image url to parse through the reactions and add them to the FacebookReactionsObject
+                        String imageURL = allMoreTabs.get(j).findElement(getSelector("menus.img.class.reaction")).getAttribute("src");
                         reactions.setReaction(imageURL, allMoreTabs.get(j).getText());
                     }
                 }
                 else {
                     globalController.wait(5);
-                    List<WebElement> images = reactionTabs.get(i).findElements(By.cssSelector(getCSSAsString("img","class","hu5pjgll bixrwtb6")));
+
+                    // Look at the rest of the main tabs and parse them using their image
+                    List<WebElement> images = reactionTabs.get(i).findElements(getSelector("menus.img.class.reaction"));
                     if (images.size() == 0) continue;
                     String imageURL = images.get(0).getAttribute("src");
                     reactions.setReaction(imageURL, textField);
@@ -125,51 +180,76 @@ public class FacebookPost {
             }
         }
         globalController.wait(5);
-        reactionContainer.findElement(By.cssSelector(getCSSAsString("div", "aria-label", "Close"))).click();
+
+        // Close the pop-up
+        reactionContainer.findElement(getSelector("menus.div.aria-label.close_reactions")).click();
 
         return reactions;
     }
 
-    public List<String> getShares(){
+    public List<String> getShares(int maxShares){
         List<String> shares = new ArrayList<>();
 
         globalController.wait(20);
-        List<WebElement> shareButton = postContainer.findElements(By.cssSelector(getCSSAsString("div", "class", "gtad4xkn")));
+
+        // Find all buttons on the page
+        List<WebElement> shareButton = postContainer.findElements(getSelector("buttons.div.class.open_shares"));
+
+        boolean buttonFound = false;
 
         for(WebElement we : shareButton) {
-            System.out.println(we.getText());
+
+            // Click on the button that will open the shares pop-up
             if(we.getText().contains("hares")) {
-                List<WebElement> a = we.findElements(By.cssSelector(getCSSAsString("div","role","button")));
+                List<WebElement> a = we.findElements(getSelector("buttons.div.role"));
                 if(a.size() != 1) {
                     break;
                 }
+                buttonFound = true;
                 globalController.runJavaScript("arguments[0].click();", a.get(0));
             }
         }
-        WebElement sharesContainer = globalController.getDriver().findElement(By.cssSelector(getCSSAsString("div", "aria-label", "People who shared this")));
 
-        WebElement textContainer = sharesContainer.findElement(By.cssSelector(getCSSAsString("div", "class", "j83agx80 cbu4d94t buofh1pr l9j0dhe7")));
+        if(!buttonFound) return shares;
 
-        new Actions(globalController.getDriver()).moveToElement(textContainer).build().perform();
+        WebElement sharesContainer = globalController.getDriver().findElement(getSelector("containers.div.aria-label.shares"));
 
-        globalController.sleep(1000);
+        WebElement textContainer = sharesContainer.findElement(getSelector("containers.div.shares_move_to_text"));
+        /*highlightWebElement(textContainer, globalController);
+        new Actions(globalController.getDriver()).moveToElement(textContainer).build().perform();*/
 
-        while(textContainer.findElements(By.cssSelector(getCSSAsString("div", "class", "rek2kq2y"))).size() != 0) {
-            WebElement bottomOfContainer = textContainer.findElement(By.cssSelector(getCSSAsString("div", "class", "ihqw7lf3")));
+        globalController.sleep(5000);
+        globalController.wait(10);
+
+        // If there are more shares to load, then scroll to the bottom of the shares pop-up
+        int lastSize = 0;
+        while(textContainer.findElements(By.cssSelector(getCSSAsString("div", "aria-label", "Show Attachment"))).size() != lastSize) {
+            List<WebElement> allSharesBoxes = textContainer.findElements(By.cssSelector(getCSSAsString("div", "aria-label", "Show Attachment")));
+
+            if(allSharesBoxes.size() >= maxShares) {
+                break;
+            }
+            lastSize = allSharesBoxes.size();
+
+            WebElement bottomOfContainer = textContainer.findElement(getSelector("containers.div.scrollable_bottom_of_shares"));
             globalController.runJavaScript("arguments[0].scrollIntoView(true);", bottomOfContainer);
+            globalController.sleep(1500);
 
         }
 
-        List<WebElement> sharesCaptionContainers = textContainer.findElements(By.cssSelector(getCSSAsString("div", "class", "kvgmc6g5 cxmmr5t8 oygrvhab hcukyx3x c1et5uql ii04i59q")));
+        // Once it has loaded enough shares, then stop scrolling and read everything that can be read
+        List<WebElement> sharesCaptionContainers = textContainer.findElements(getSelector("containers.div.shares_box"));
+
         for(WebElement container: sharesCaptionContainers) {
-            shares.add(container.getText());
+            if(!container.getText().isEmpty()) shares.add(container.getText());
         }
         return shares;
     }
 
 
     public String getContent(){
-        List<WebElement> contentContainer = postContainer.findElements(By.cssSelector(getCSSAsString("div", "class", "ecm0bbzt hv4rvrfc ihqw7lf3 dati1w0a")));
+        // If the post has readable content, then scrape it
+        List<WebElement> contentContainer = postContainer.findElements(getSelector("containers.div.class.post_content"));
         if(contentContainer.size() == 1) {
             return contentContainer.get(0).getText();
         }
