@@ -1,3 +1,5 @@
+## OUTDATED
+
 # Deliverable Schedule
 
 This is the first program report's deliverable schedule for the "Analysis of algorithms: Facebook Suggestions" project. All of the following tasks will be completed by myself, Sajad Wazin.

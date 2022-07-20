@@ -1,3 +1,5 @@
+## OUTDATED
+
 # FacebookWebScraper
 This automated applet will allow the user to scrape relevant data by searching through a curated list of Facebook pages or groups. This applet will be interactive and highly customizable to allow the user to select what type of information needs to be collected. In particular, it can be deployed in command-line (terminal) mode, which allows for a Batch-sequential architecture style of automation. It can also be deployed in GUI mode, which is more convenient for the user.
 
