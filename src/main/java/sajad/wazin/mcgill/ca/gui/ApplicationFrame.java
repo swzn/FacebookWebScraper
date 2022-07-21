@@ -68,8 +68,8 @@ public class ApplicationFrame {
     private void generateScrapingDropdown() {
         // Create the dropdown that allows users to choose the scrapers they want
         StringDropdown scrapingModes = new StringDropdown(
-                "Posts Content Scraper",
-                "Posts Suggestions Scraper"
+                "Content Scraper",
+                "Suggestions Scraper"
         );
         scrapingModes.setPromptText("Choose a scraping mode");
 

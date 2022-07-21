@@ -7,14 +7,12 @@ package sajad.wazin.mcgill.ca.scraper;
  */
 
 public enum ScraperEnum {
-    POST_CONTENT, POST_SUGGESTIONS, GROUPS_SUGGESTIONS, GROUPS_CONTENT, NULL_SCRAPER;
+    CONTENT_SCRAPER, SUGGESTIONS_SCRAPER, NULL_SCRAPER;
 
     public static ScraperEnum getScraper(String s) {
         return switch (s) {
-            case "Posts Content Scraper" -> POST_CONTENT;
-            case "Groups Content Scraper" -> GROUPS_CONTENT;
-            case "Posts Suggestions Scraper" -> POST_SUGGESTIONS;
-            case "Groups Suggestions Scraper" -> GROUPS_SUGGESTIONS;
+            case "Content Scraper" -> CONTENT_SCRAPER;
+            case "Suggestions Scraper" -> SUGGESTIONS_SCRAPER;
             default -> NULL_SCRAPER;
         };
     }
