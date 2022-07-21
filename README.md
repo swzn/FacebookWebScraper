@@ -65,6 +65,8 @@ By clicking the option, although it will not make a massive difference in perfor
 ### Scraping process
 Once the user has started the scrape, the log console will appear. This console is read-only and serves the purposes of keeping track of the program and making sure everything works properly. In the case where a user must cancel a task, the "Cancel Task" button will safely cancel the task after the current post/suggestion scrape is over. The "Dump Memory" button will losslessly output the current data saved in memory into a "dump" folder in the output directory. The "Kill Process" button is meant to be used only if the "Cancel Task" button did not work or if the program is stuck in an infinite loop. It will attempt to dump the memory and subsequently kill the chromedriver as well as the current process.
 
+![](img/scraper.png)
+
 ## Running the program through a Java application
 
 In the FacebookWebScraper.java main method, add the following code.
