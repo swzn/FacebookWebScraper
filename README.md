@@ -1,3 +1,19 @@
+# How to get access to FacebookWebScraper
+
+You can access the application by git cloning this repository and running this maven command in your IDE of choice (recommended to use IntelliJ):
+
+`mvn clean install`
+
+You can also download the latest version of this application using this link: [FacebookWebScraper.jar](https://drive.google.com/file/d/1LTvAyHI3-g1k-W_XXZVFxU1gRj_M1tne/view?usp=sharing)
+# System Requirements
+
+Operating System: required Windows, recommended Windows 10/11.
+
+Chrome Version: 103.X
+
+JDK Version: 15.0.X
+
+
 # How to use FacebookWebScraper
 
 FacebookWebScraper can either be ran through the GUI or as a Java Application.
