@@ -9,9 +9,9 @@ You can also download the latest version of this application using this link: [F
 
 Operating System: required Windows, recommended Windows 10/11.
 
-Chrome Version: 103.X
+Chrome Version: required 103.X, recommended 103.0.5060.114
 
-JDK Version: 15.0.X
+JDK Version: required 15.0.X, recommended 15.0.1
 
 
 # How to use FacebookWebScraper
