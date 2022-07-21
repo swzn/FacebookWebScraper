@@ -53,7 +53,7 @@ public class SettingsDialog extends Stage {
         this.settingsPane.setVgap(5);
 
         // Initialize the settings dialog appropriate for the given scraper enum
-        if(scraperType == ScraperEnum.POST_CONTENT || scraperType == ScraperEnum.GROUPS_CONTENT) initializeContentsSettingsGrid();
+        if(scraperType == ScraperEnum.CONTENT_SCRAPER) initializeContentsSettingsGrid();
         else initializeSuggestionsSettingsGrid();
 
         // Show the dialog

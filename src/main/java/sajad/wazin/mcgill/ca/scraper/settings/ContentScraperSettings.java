@@ -24,12 +24,12 @@ public class ContentScraperSettings implements ScraperSettings {
     private int amountOfPosts = 2;
     private int amountOfComments = 10;
     private int instanceCount = 1;
+    private int amountOfShares = 10;
 
     public int getAmountOfShares() {
         return amountOfShares;
     }
 
-    private int amountOfShares;
 
     //Optional boolean
     private boolean headless = false;
