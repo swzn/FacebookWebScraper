@@ -33,7 +33,7 @@ To select the settings, the user must first select a scraping mode. Currently, t
 - Max children: Set the maximum amount of suggestions/children any given page can have
 - Max depth: Set the maximum depth or distance away from the root any page can have
 
-![](img/content_scraper_settings.png)
+![](img/suggestions_scraper_settings.png)
 
 ### Setting the input
 The input must be a ".txt" file containing a list of valid Facebook URLs to pages. Any invalid Facebook URL will be skipped or may result in the program terminating after a certain amount of failures.
