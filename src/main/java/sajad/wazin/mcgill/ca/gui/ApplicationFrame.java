@@ -179,7 +179,7 @@ public class ApplicationFrame {
         // Create a button to stop the task
         Button cancelTask = new Button("Cancel task as soon as possible");
         cancelTask.setOnAction(actionEvent -> {
-            FacebookWebScraper.CANCELLED_TASK = true;
+            CANCELLED_TASK = true;
             LOGGER.log("Task will be cancelled after the current scrape!");
             cancelTask.setDisable(true);
         });
@@ -248,7 +248,9 @@ public class ApplicationFrame {
                 // Create a "Kill Process" button
                 Button kill = new Button("Kill current process");
                 kill.setOnAction(killAction -> {
+                    CANCELLED_TASK = true;
                     CONTROLLER_POOL.kill();
+                    RESOURCES.deleteTemp();
                     LOGGER.log("Process has been killed");
                     DUMP_MANAGER.dump(Path.of(currentSettings.getOutput().toString() + "\\killed_process"));
                     System.exit(0);

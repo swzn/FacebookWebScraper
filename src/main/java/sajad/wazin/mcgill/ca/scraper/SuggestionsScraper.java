@@ -90,6 +90,7 @@ public class SuggestionsScraper implements Scraper {
         }
 
         CONTROLLER_POOL.kill(controller);
+        RESOURCES.deleteTemp();
 
         if(CANCELLED_TASK) LOGGER.log("Task has been cancelled");
         LOGGER.log("Task has completed with " + suggestionsMap.size() + " unique suggestions");
