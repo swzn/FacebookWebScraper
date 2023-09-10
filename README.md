@@ -1,3 +1,17 @@
+# McGill Research Project
+
+This project was developed as part of a research project with [Prof. Joseph Vybihal's](https://www.cs.mcgill.ca/~jvybihal/index.php?Page=Home) lab. As a student research developer, I was tasked with making an application that could determine if social media platforms are subject to siloing. In the context of this research project, I developed an application that roams Facebook with the purpose of discover any such phenomenon on the platform.
+
+# Technologies used
+
+<p align="left"> 
+  <a href="https://www.java.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" alt="java" width="40" height="40"/> </a> 
+  <a href="https://www.selenium.dev" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/detain/svg-logos/780f25886640cef088af994181646db2f6b1a3f8/svg/selenium-logo.svg" alt="selenium" width="40" height="40"/> </a>
+  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a>
+  <a href="https://www.python.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> </a> 
+  <a href="https://git-scm.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/> </a> 
+ </p>
+
 # How to get access to FacebookWebScraper
 
 You can access the application by git cloning this repository and running this maven command in your IDE of choice (recommended to use IntelliJ):
