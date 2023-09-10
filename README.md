@@ -1,7 +1,6 @@
 # McGill Research Project
 
-This project was developed as part of a research project with [Prof. Joseph Vybihal's](https://www.cs.mcgill.ca/~jvybihal/index.php?Page=Home) lab. As a student research developer, I was tasked with making an application that could determine if social media platforms are subject to siloing. In the context of this research project, I developed an application that roams Facebook with the purpose of discover any such phenomenon on the platform.
-
+This project was developed as part of a research project with [Prof. Joseph Vybihal's](https://www.cs.mcgill.ca/~jvybihal/index.php?Page=Home) lab. As a student research developer, I was tasked with making an application that could determine if social media platforms are subject to siloing. In the context of this research project, I developed an application that roams Facebook with the purpose of discover any such phenomenon on the platform. More information may be found in the [final report](docs/Final%20Report.pdf) for this project.
 # Technologies used
 
 <p align="left"> 
@@ -10,6 +9,7 @@ This project was developed as part of a research project with [Prof. Joseph Vybi
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a>
   <a href="https://www.python.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> </a> 
   <a href="https://git-scm.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/> </a> 
+  <img src="https://github.com/devicons/devicon/blob/master/icons/latex/latex-original.svg" alt="git" width="40" height="40"/>
  </p>
 
 # How to get access to FacebookWebScraper
